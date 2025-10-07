@@ -1,0 +1,85 @@
+Fluxo de trabalho 
+
+1. Escolha do LLM Base
+  Por quê? Treinar um LLM do zero é inviável. Partir de um modelo open-source ou API
+
+Opções open-source
+
+  LLaMA 3 (Meta)
+  Mistral (eficiente e leve)
+  Falcon (especializado em ciência e dados)
+  Opções via API:
+    OpenAI GPT-4/5, Claude, Gemini (mais fácil, mas menos controle sobre treinamento).
+  
+
+
+2. Construção do Corpus Especializado
+  Fonte: ClimateChat-Corpus como metodologia de inspiração.
+  
+  Como aplicar no contexto (América do Sul / Amazônia / Brasil Central):
+    Self-QA: gerar pares de pergunta/resposta automáticos a partir de textos científicos.
+    Web Scraping: coletar relatórios de agências (INPE, IPCC, CPTEC, FAO, EMBRAPA).
+    Self-Instruct: gerar instruções especializadas para treinamento.
+  
+  
+  Saída esperada: um corpus curado em português/inglês sobre
+    mudanças no uso do solo, desmatamento, estações chuvosas, impactos agrícolas, previsão climática regional.
+
+
+
+3. Estratégia de Integração com o LLM
+  3 caminhos possíveis:
+    Fine-Tuning (afinamento do modelo)
+      Alimentar o LLM com o corpus e especializá-lo.
+      Requer GPU forte, mas dá modelo especializado permanente.
+    
+    RAG (Retrieval-Augmented Generation)
+      Indexar o corpus em um banco vetorial (Pinecone, Weaviate, FAISS).
+      O LLM responde buscando primeiro no corpus → respostas sempre contextualizadas.
+      Mais viável para TCC, porque não exige re-treinar modelo.
+    
+    
+    Prompt Engineering / In-Context Learning
+      Colocar partes do corpus diretamente no prompt.
+      Mais simples, mas menos escalável.
+
+
+
+4. Pipeline Técnico
+  Pré-processar os dados (limpeza de PDFs, normalização, tradução se necessário)
+  Gerar embeddings (usando modelos como SentenceTransformers ou OpenAI embeddings)
+  Armazenar embeddings em um banco vetorial.
+
+
+Integrar com LLM:
+
+  Usuário faz pergunta
+  Sistema busca contexto relevante no banco
+  Contexto é colocado no prompt: LLM responde.
+
+
+
+5. Avaliação
+  Critérios possíveis para o TCC:
+  
+    Cobertura temática: o modelo consegue responder sobre desmatamento, estações chuvosas, agricultura?
+    Qualidade da resposta: clareza, correção científica, consistência.
+    Comparação: resposta do modelo genérico vs. modelo especializado (com corpus).
+  
+
+
+6. Produto Final no TCC
+  Um protótipo funcional onde o usuário faz perguntas como:
+    “Quais os impactos do desmatamento na estação chuvosa da Amazônia?”
+    “Como a variabilidade climática afeta a agricultura no Brasil Central?”
+    O sistema responde com base no corpus que montou.
+    
+  Mostrar exemplo prático + metodologia + análise crítica 
+
+
+
+Em resumo:
+ O ClimateChat entra no TCC como inspiração metodológica (para coleta e organização do corpus).
+ O LLM base é carregado normalmente (open-source ou API).
+ A integração acontece via fine-tuning ou RAG, sendo o RAG mais viavel
+
